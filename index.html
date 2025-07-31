@@ -802,7 +802,7 @@
         function abrirPDF(arquivo) {
             // Usando PDF.js para visualização de PDF compatível com políticas de segurança
             const url = `https://raw.githubusercontent.com/iramalho1980/missa_4.1/main/${encodeURIComponent(arquivo)}`;
-            const pdfViewerUrl = `https://mozilla.github.io/pdf.js/web/viewer.html?file=${encodeURIComponent(url)}`;
+            const pdfViewerUrl = `https://docs.google.com/gview?url=${encodeURIComponent(url)}&embedded=true`;
             
             const popup = document.getElementById('popupOverlay');
             const iframe = document.getElementById('popupPdf');
