@@ -28,11 +28,32 @@
             text-align: center;
             margin-bottom: 40px;
             padding: 30px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(40px) saturate(180%);
+            border-radius: 30px;
+            border: 2px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                0 0 0 1px rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.1) 0%, 
+                rgba(255, 255, 255, 0.05) 25%, 
+                rgba(255, 255, 0, 0.1) 50%, 
+                rgba(255, 255, 255, 0.05) 75%, 
+                rgba(255, 255, 255, 0.1) 100%);
+            pointer-events: none;
         }
 
         .header h1 {
@@ -42,12 +63,14 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            text-shadow: 0 0 20px rgba(255, 255, 0, 0.5);
+            text-shadow: 0 0 30px rgba(255, 255, 0, 0.7);
+            filter: drop-shadow(0 0 10px rgba(255, 255, 0, 0.5));
         }
 
         .header p {
             font-size: 1.1rem;
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         .canticos-grid {
@@ -58,15 +81,20 @@
         }
 
         .cantico-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
-            border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(30px) saturate(200%) brightness(110%);
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
             padding: 25px;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
             position: relative;
             overflow: hidden;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.12),
+                0 2px 8px rgba(0, 0, 0, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                0 0 0 1px rgba(255, 255, 255, 0.02);
         }
 
         .cantico-card::before {
@@ -76,23 +104,55 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 0, 0.2), transparent);
-            transition: left 0.5s ease;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.1), 
+                rgba(255, 255, 0, 0.15), 
+                rgba(255, 255, 255, 0.1), 
+                transparent);
+            transition: left 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .cantico-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, 
+                rgba(255, 255, 255, 0.08) 0%, 
+                rgba(255, 255, 0, 0.05) 30%, 
+                transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
         }
 
         .cantico-card:hover::before {
             left: 100%;
         }
 
+        .cantico-card:hover::after {
+            opacity: 1;
+        }
+
         .cantico-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(255, 255, 0, 0.3);
-            border-color: #ffff00;
+            transform: translateY(-12px) scale(1.03);
+            box-shadow: 
+                0 25px 80px rgba(255, 255, 0, 0.25),
+                0 10px 40px rgba(0, 0, 0, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                0 0 0 1px rgba(255, 255, 0, 0.3);
+            border-color: rgba(255, 255, 0, 0.4);
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(40px) saturate(250%) brightness(120%);
         }
 
         .cantico-card.realizado {
-            background: rgba(0, 255, 0, 0.2);
-            border-color: #00ff00;
+            background: rgba(0, 255, 0, 0.25);
+            border-color: rgba(0, 255, 0, 0.5);
+            box-shadow: 0 8px 32px rgba(0, 255, 0, 0.2);
         }
 
         .cantico-card.realizado::after {
@@ -102,7 +162,8 @@
             right: 15px;
             font-size: 1.5rem;
             color: #00ff00;
-            text-shadow: 0 0 10px #00ff00;
+            text-shadow: 0 0 15px #00ff00;
+            filter: drop-shadow(0 0 5px #00ff00);
         }
 
         .cantico-card.expandido {
@@ -125,14 +186,15 @@
             display: inline-block;
             background: linear-gradient(45deg, #ffff00, #f0d000);
             color: #000;
-            width: 30px;
-            height: 30px;
+            width: 35px;
+            height: 35px;
             border-radius: 50%;
             text-align: center;
-            line-height: 30px;
+            line-height: 35px;
             font-weight: bold;
             margin-bottom: 15px;
-            box-shadow: 0 0 15px rgba(255, 255, 0, 0.5);
+            box-shadow: 0 0 20px rgba(255, 255, 0, 0.6);
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
         }
 
         .cantico-tipo {
@@ -142,6 +204,7 @@
             letter-spacing: 1px;
             margin-bottom: 8px;
             font-weight: bold;
+            text-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
         }
 
         .cantico-titulo {
@@ -149,11 +212,12 @@
             margin-bottom: 10px;
             color: white;
             font-weight: bold;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         .cantico-arquivo {
             font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.7);
+            color: rgba(255, 255, 255, 0.8);
             font-style: italic;
         }
 
@@ -162,29 +226,35 @@
             color: #000;
             border: none;
             border-radius: 50%;
-            width: 35px;
-            height: 35px;
+            width: 40px;
+            height: 40px;
             cursor: pointer;
             font-size: 1.2rem;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 4px 15px rgba(255, 255, 0, 0.3);
         }
 
         .expand-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 15px rgba(255, 255, 0, 0.7);
+            transform: scale(1.15);
+            box-shadow: 0 0 25px rgba(255, 255, 0, 0.8);
+            filter: brightness(1.1);
         }
 
         .expand-btn.rotated {
             transform: rotate(180deg);
         }
 
+        .expand-btn.rotated:hover {
+            transform: rotate(180deg) scale(1.15);
+        }
+
         .cantico-conteudo {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.3s ease;
+            transition: max-height 0.4s ease;
         }
 
         .cantico-conteudo.expandido {
@@ -192,60 +262,68 @@
         }
 
         .cantico-letra {
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
             padding: 20px;
-            border-radius: 10px;
+            border-radius: 15px;
             margin: 20px 0;
             white-space: pre-line;
             font-family: 'Courier New', monospace;
             font-size: 0.95rem;
             line-height: 1.6;
-            color: rgba(255, 255, 255, 0.9);
+            color: rgba(255, 255, 255, 0.95);
             border-left: 4px solid #ffff00;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2);
         }
 
         .botoes {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             margin-top: 15px;
             flex-wrap: wrap;
         }
 
         .btn {
-            padding: 8px 16px;
+            padding: 10px 18px;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             cursor: pointer;
             font-size: 0.9rem;
             transition: all 0.3s ease;
             text-decoration: none;
             display: inline-block;
             text-align: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
         .btn-pdf {
             background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
             color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .btn-pdf:hover {
             background: linear-gradient(45deg, #ff5252, #ff7979);
-            transform: scale(1.05);
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
         }
 
         .btn-realizado {
             background: linear-gradient(45deg, #4ecdc4, #44a08d);
             color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .btn-realizado:hover {
             background: linear-gradient(45deg, #26d0ce, #2eb398);
-            transform: scale(1.05);
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 8px 25px rgba(78, 205, 196, 0.4);
         }
 
         .btn-realizado.ativo {
             background: linear-gradient(45deg, #00ff00, #32ff32);
-            box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.6);
         }
 
         .popup-overlay {
@@ -255,109 +333,158 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(5px);
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(15px);
             z-index: 1000;
             justify-content: center;
             align-items: center;
         }
 
         .popup-content {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(30px);
+            border-radius: 20px;
             padding: 20px;
             max-width: 90vw;
             max-height: 90vh;
             position: relative;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
         .popup-close {
             position: absolute;
-            top: 10px;
-            right: 15px;
-            background: #ff4757;
+            top: 15px;
+            right: 20px;
+            background: linear-gradient(45deg, #ff4757, #ff6b7a);
             color: white;
             border: none;
             border-radius: 50%;
-            width: 30px;
-            height: 30px;
+            width: 35px;
+            height: 35px;
             cursor: pointer;
             font-size: 1.2rem;
             transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 71, 87, 0.3);
         }
 
         .popup-close:hover {
-            background: #ff3742;
+            background: linear-gradient(45deg, #ff3742, #ff5865);
             transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(255, 71, 87, 0.5);
         }
 
         .popup-pdf {
             width: 80vw;
             height: 80vh;
             border: none;
-            border-radius: 10px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
         .progresso {
             margin-top: 30px;
             text-align: center;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(35px) saturate(180%) brightness(110%);
+            border-radius: 25px;
             border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 12px 40px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15),
+                0 0 0 1px rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progresso::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.05) 0%, 
+                rgba(255, 255, 0, 0.08) 50%, 
+                rgba(255, 255, 255, 0.05) 100%);
+            pointer-events: none;
         }
 
         .progresso h3 {
             color: #ffff00;
-            margin-bottom: 15px;
-            font-size: 1.3rem;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+            text-shadow: 0 0 15px rgba(255, 255, 0, 0.5);
         }
 
         .barra-progresso {
             background: rgba(255, 255, 255, 0.2);
-            height: 20px;
-            border-radius: 10px;
+            height: 25px;
+            border-radius: 15px;
             overflow: hidden;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.2);
         }
 
         .barra-progresso-fill {
             height: 100%;
-            background: linear-gradient(45deg, #ffff00, #00ff00);
+            background: linear-gradient(45deg, #ffff00, #00ff00, #32ff32);
             width: 0%;
-            transition: width 0.5s ease;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(255, 255, 0, 0.5);
+            transition: width 0.6s ease;
+            border-radius: 15px;
+            box-shadow: 0 0 25px rgba(255, 255, 0, 0.6);
+            position: relative;
+        }
+
+        .barra-progresso-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
 
         .progresso-texto {
             color: white;
             font-size: 1.1rem;
+            font-weight: bold;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         .controles-globais {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .btn-global {
             background: linear-gradient(45deg, #667eea, #764ba2);
             color: white;
-            padding: 10px 20px;
-            margin: 5px;
+            padding: 12px 24px;
+            margin: 8px;
             border: none;
-            border-radius: 10px;
+            border-radius: 15px;
             cursor: pointer;
             font-size: 0.95rem;
             transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
         }
 
         .btn-global:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+            background: linear-gradient(45deg, #5a6fd8, #6a4c93);
         }
 
         @media (max-width: 768px) {
@@ -414,7 +541,7 @@
     </div>
 
     <script>
-        // Dados dos cânticos com letras
+        // Dados dos cânticos com letras - ORDEM REORGANIZADA E NOMES CORRETOS DOS ARQUIVOS
         const canticos = [
             {
                 id: 1,
@@ -467,31 +594,31 @@
             },
             {
                 id: 8,
+                tipo: "Amém",
+                titulo: "Aaaamém",
+                arquivo: "Amem-Aaaamem.pdf",
+                letra: "Amém, Amém, Aaaamém\nAmém, Amém, Aaaamém"
+            },
+            {
+                id: 9,
                 tipo: "Cordeiro",
                 titulo: "Cordeiro de Deus que Tirais",
                 arquivo: "Cordeiro-CordeirodeDeusquetirais.pdf",
                 letra: "CORDEIRO DE DEUS QUE TIRAIS O PECADO DO MUNDO\nTENDE PIEDADE, TENDE PIEDADE, TENDE PIEDADE,\nPIEDADE DE NÓS!\n\nCORDEIRO DE DEUS QUE TIRAIS O PECADO DO MUNDO\nTENDE PIEDADE, TENDE PIEDADE, TENDE PIEDADE,\nPIEDADE DE NÓS!\n\nCORDEIRO DE DEUS QUE TIRAIS O PECADO DO MUNDO\nDAÍ-NOS A PAZ, DAÍ-NOS A PAZ, DAÍ-NOS A PAZ SENHOR...\nA VOSSA PAZ"
             },
             {
-                id: 9,
+                id: 10,
                 tipo: "Comunhão",
                 titulo: "Este Pranto em Minhas Mãos",
                 arquivo: "Comunhão-este_pranto_em_minhas_maos.pdf",
                 letra: "Muito alegre eu te pedi o que era meu, partir\nUm sonho tão normal\nDissipei meus bens o coração também, no fim\nMeu mundo era irreal\n\nConfiei no teu amor e voltei\nSim aqui é meu lugar\nEu gastei teus bens ó Pai e Te dou\nEste pranto em minhas mãos\n\nMil amigos conheci disseram adeus, caiu\nA solidão em mim\nUm patrão cruel levou-me a refletir: meu Pai\nNão trata um servo assim\n\nNem deixaste-me falar da ingratidão, morreu\nNo abraço o mal que eu fiz\nFesta roupa nova anel sandálias nos pés, voltei\nÀ vida sou feliz"
             },
             {
-                id: 10,
+                id: 11,
                 tipo: "Final",
                 titulo: "Anjos de Deus",
                 arquivo: "Final-AnjosdeDeus.pdf",
                 letra: "SE ACONTECER UM BARULHO PERTO DE VOCÊ\nÉ UM ANJO CHEGANDO PARA RECEBER\nSUAS ORAÇÕES E LEVÁ-LAS A DEUS\n\nENTÃO ABRA O CORAÇÃO E COMECE A LOUVAR\nSINTA O GOSTO DO CÉU QUE SE DERRAMA NO ALTAR\nQUE UM ANJO JÁ VEM COM A BENÇÃO NAS MÃOS\n\nTEM ANJOS VOANDO NESTE LUGAR\nNO MEIO DO POVO E EM CIMA DO ALTAR\nSUBINDO E DESCENDO EM TODAS AS DIREÇÕES\n\nNÃO SEI SE A IGREJA SUBIU OU SE O CÉU DESCEU\nSÓ SEI QUE ESTÁ CHEIO DE ANJOS DE DEUS\nPORQUE O PRÓPRIO DEUS ESTÁ AQUI\n\nQUANDO OS ANJOS PASSEIAM A IGREJA SE ALEGRA\nELA CANTA, ELA CHORA, ELA RI E CELEBRA\nABALA O INFERNO E DISSIPA O MAL\nSINTA O VENTO DAS ASAS DOS ANJOS AGORA\nCONFIA IRMÃO POIS É A TUA HORA\nA BENÇÃO CHEGOU E VOCÊ VAI LEVAR"
-            },
-            {
-                id: 11,
-                tipo: "Amém",
-                titulo: "Aaaamém",
-                arquivo: "Amem-Aaaamem.pdf",
-                letra: "Amém, Amém, Aaaamém\nAmém, Amém, Aaaamém"
             }
         ];
 
@@ -568,7 +695,8 @@
         function abrirPDF(arquivo) {
             const popup = document.getElementById('popupOverlay');
             const iframe = document.getElementById('popupPdf');
-            iframe.src = `upload/${arquivo}`;
+            // CORREÇÃO: URLs dos PDFs apontando para GitHub raw com nomes corretos
+            iframe.src = `https://raw.githubusercontent.com/iramalho1980/missa_4.1/main/${arquivo}`;
             popup.style.display = 'flex';
         }
 
