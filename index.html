@@ -800,12 +800,14 @@
         }
 
         function abrirPDF(arquivo) {
-            // Abrindo PDF em popup em tela cheia
+            // Usando PDF.js para visualização de PDF compatível com políticas de segurança
             const url = `https://raw.githubusercontent.com/iramalho1980/missa_4.1/main/${encodeURIComponent(arquivo)}`;
+            const pdfViewerUrl = `https://mozilla.github.io/pdf.js/web/viewer.html?file=${encodeURIComponent(url)}`;
+            
             const popup = document.getElementById('popupOverlay');
             const iframe = document.getElementById('popupPdf');
             
-            iframe.src = url;
+            iframe.src = pdfViewerUrl;
             popup.style.display = 'flex';
         }
 
