@@ -2,7 +2,11 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <title>Cânticos da Missa - Pasta Virtual</title>
     <style>
         * {
@@ -333,7 +337,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(0, 0, 0, 0.95);
             backdrop-filter: blur(15px);
             z-index: 1000;
             justify-content: center;
@@ -345,11 +349,13 @@
             backdrop-filter: blur(30px);
             border-radius: 20px;
             padding: 20px;
-            max-width: 90vw;
-            max-height: 90vh;
+            width: 100vw;
+            height: 100vh;
             position: relative;
             box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            flex-direction: column;
         }
 
         .popup-close {
@@ -360,12 +366,13 @@
             color: white;
             border: none;
             border-radius: 50%;
-            width: 35px;
-            height: 35px;
+            width: 45px;
+            height: 45px;
             cursor: pointer;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(255, 71, 87, 0.3);
+            z-index: 1001;
         }
 
         .popup-close:hover {
@@ -375,11 +382,12 @@
         }
 
         .popup-pdf {
-            width: 80vw;
-            height: 80vh;
+            width: 100%;
+            height: calc(100% - 20px);
             border: none;
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin-top: 10px;
         }
 
         .progresso {
@@ -505,6 +513,93 @@
                 grid-column: 1;
             }
         }
+
+        /* Otimizações específicas para iPad e iOS */
+        @media screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+            .popup-content {
+                padding: 30px;
+                border-radius: 0;
+            }
+            
+            .popup-pdf {
+                height: calc(100vh - 80px);
+                border-radius: 10px;
+            }
+            
+            .popup-close {
+                width: 50px;
+                height: 50px;
+                font-size: 1.8rem;
+                top: 20px;
+                right: 30px;
+            }
+        }
+
+        /* Suporte para orientação landscape no iPad */
+        @media screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) {
+            .popup-content {
+                padding: 20px;
+            }
+            
+            .popup-pdf {
+                height: calc(100vh - 60px);
+            }
+        }
+
+        /* Suporte para iPhone e dispositivos móveis menores */
+        @media screen and (max-device-width: 767px) {
+            .popup-content {
+                padding: 15px;
+                border-radius: 0;
+            }
+            
+            .popup-pdf {
+                height: calc(100vh - 50px);
+                border-radius: 5px;
+            }
+            
+            .popup-close {
+                width: 40px;
+                height: 40px;
+                font-size: 1.3rem;
+                top: 10px;
+                right: 15px;
+            }
+            
+            .cantico-card {
+                padding: 20px;
+            }
+            
+            .cantico-titulo {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Suporte para toque e gestos */
+        .popup-overlay {
+            -webkit-overflow-scrolling: touch;
+            touch-action: manipulation;
+        }
+        
+        .popup-pdf {
+            -webkit-overflow-scrolling: touch;
+            overflow: auto;
+        }
+        
+        /* Prevenção de zoom indesejado no iOS */
+        input, select, textarea {
+            font-size: 16px;
+        }
+        
+        /* Melhor suporte para safe areas no iOS */
+        @supports (padding: max(0px)) {
+            .popup-content {
+                padding-top: max(20px, env(safe-area-inset-top));
+                padding-bottom: max(20px, env(safe-area-inset-bottom));
+                padding-left: max(20px, env(safe-area-inset-left));
+                padding-right: max(20px, env(safe-area-inset-right));
+            }
+        }
     </style>
 </head>
 <body>
@@ -548,6 +643,7 @@
                 tipo: "Entrada",
                 titulo: "Eis-me Aqui, Senhor",
                 arquivo: "Entrada-Eis-meAqui,Senhor.pdf",
+                tom: "Sol Maior",
                 letra: "EIS-ME AQUI, SENHOR! EIS-ME AQUI, SENHOR!\nPRA FAZER TUA VONTADE, PRA VIVER NO TEU AMOR,\nPRA FAZER TUA VONTADE PRA VIVER NO TEU AMOR,\nEIS-ME AQUI, SENHOR!\n\nO SENHOR É O PASTOR QUE ME CONDUZ\nPOR CAMINHOS NUNCA VISTOS ME ENVIOU\nSOU CHAMADO A SER FERMENTO, SAL E LUZ\nE POR ISSO RESPONDI: \"AQUI ESTOU!\""
             },
             {
@@ -555,6 +651,7 @@
                 tipo: "Ato Penitencial",
                 titulo: "Pelos Pecados",
                 arquivo: "AtoPenitencial-PelosPecados.pdf",
+                tom: "Ré menor",
                 letra: "PELOS PECADOS, ERROS PASSADOS\nPOR DIVISÕES NA TUA IGREJA, Ó JESUS\nSENHOR PIEDADE, SENHOR PIEDADE\nSENHOR PIEDADE, PIEDADE DE NÓS (2X)\n\nQUEM NÃO TE ACEITA, QUEM TE REJEITA\nPODE NÃO CRER POR VER CRISTÃOS QUE VIVEM MAL\nCRISTO PIEDADE, CRISTO PIEDADE\nCRISTO PIEDADE, PIEDADE DE NÓS (2X)\n\nHOJE SE A VIDA É TÃO FERIDA\nDEVE-SE A CULPA, INDIFERENÇA DOS CRISTÃOS.\nSENHOR PIEDADE, SENHOR PIEDADE\nSENHOR PIEDADE, PIEDADE DE NÓS (2X)"
             },
             {
@@ -562,6 +659,7 @@
                 tipo: "Gloria",
                 titulo: "Gloria ao Pai Criador",
                 arquivo: "Gloria-gloria_ao_pai_criador.pdf",
+                tom: "Dó Maior",
                 letra: "Glória... Glória...\nAo Pai criador ao Filho redentor\nE ao Espírito Glória (bis)\n\nAo Pai criador do mundo\nAo Filho redentor dos homens\nAo Espírito de amor demos sempre\nGlória..."
             },
             {
@@ -569,6 +667,7 @@
                 tipo: "Salmo",
                 titulo: "Salmo 32 - Feliz o Povo",
                 arquivo: "Salmo-salmo32.pdf",
+                tom: "Fá Maior",
                 letra: "Feliz o povo que o Senhor\nescolheu por sua herança!\n\nÓ justos, alegrai-vos no Senhor!\naos retos fica bem glorificá-lo.\nFeliz o povo cujo Deus é o Senhor\ne a nação que escolheu por sua herança!\n\nMas o Senhor pousa o olhar sobre os que o temem,\ne que confiam esperando em seu amor,\npara da morte libertar as suas vidas\ne alimentá-los quando é tempo de penúria.\n\nNo Senhor nós esperamos confiantes,\nporque ele é nosso auxílio e proteção!\nSobre nós venha, Senhor, a vossa graça,\nda mesma forma que em vós nós esperamos!"
             },
             {
@@ -576,6 +675,7 @@
                 tipo: "Aclamação",
                 titulo: "A Minha Alma Abrirei",
                 arquivo: "Aclamação-a_minhalma_abrirei.pdf",
+                tom: "Lá Maior",
                 letra: "Aleluia Aleluia a minh'alma abrirei\nAleluia Aleluia Cristo é meu Rei\n\n(Repete em tons diferentes)"
             },
             {
@@ -583,6 +683,7 @@
                 tipo: "Ofertório",
                 titulo: "Meu Coração É Para Ti",
                 arquivo: "Ofertório-meu_coracao_eh_para_ti.pdf",
+                tom: "Mi menor",
                 letra: "Meu coração é para Ti Senhor\nMeu coração é para Ti Senhor\nMeu coração é para Ti Senhor\nMeu coração é para Ti\n\nPorque Tu me deste a Vida\nPorque Tu me deste o existir\nPorque Tu me deste o carinho\nMe deste o Amor\n\nPão e vinho são para Ti...\nA minha vida é para Ti..."
             },
             {
@@ -590,6 +691,7 @@
                 tipo: "Santo",
                 titulo: "Santo, Santo É",
                 arquivo: "Santo-santo_santo_e.pdf",
+                tom: "Si♭ Maior",
                 letra: "Santo Santo é Santo Santo é\nDeus do universo ó Senhor Javé\nO céu e a terra Vos proclamam Glorioso\nHosana Hosana nas alturas\n\nBendito o que vem em nome do Senhor\nHosana Hosana nas alturas\nHosana Hosana ao Rei.\nHosana Hosana nas alturas\nHosana Hosana ao Rei."
             },
             {
@@ -597,6 +699,7 @@
                 tipo: "Amém",
                 titulo: "Aaaamém",
                 arquivo: "Amem-Aaaamem.pdf",
+                tom: "Dó Maior",
                 letra: "Amém, Amém, Aaaamém\nAmém, Amém, Aaaamém"
             },
             {
@@ -604,6 +707,7 @@
                 tipo: "Cordeiro",
                 titulo: "Cordeiro de Deus que Tirais",
                 arquivo: "Cordeiro-CordeirodeDeusquetirais.pdf",
+                tom: "Sol menor",
                 letra: "CORDEIRO DE DEUS QUE TIRAIS O PECADO DO MUNDO\nTENDE PIEDADE, TENDE PIEDADE, TENDE PIEDADE,\nPIEDADE DE NÓS!\n\nCORDEIRO DE DEUS QUE TIRAIS O PECADO DO MUNDO\nTENDE PIEDADE, TENDE PIEDADE, TENDE PIEDADE,\nPIEDADE DE NÓS!\n\nCORDEIRO DE DEUS QUE TIRAIS O PECADO DO MUNDO\nDAÍ-NOS A PAZ, DAÍ-NOS A PAZ, DAÍ-NOS A PAZ SENHOR...\nA VOSSA PAZ"
             },
             {
@@ -611,6 +715,7 @@
                 tipo: "Comunhão",
                 titulo: "Este Pranto em Minhas Mãos",
                 arquivo: "Comunhão-este_pranto_em_minhas_maos.pdf",
+                tom: "Ré Maior",
                 letra: "Muito alegre eu te pedi o que era meu, partir\nUm sonho tão normal\nDissipei meus bens o coração também, no fim\nMeu mundo era irreal\n\nConfiei no teu amor e voltei\nSim aqui é meu lugar\nEu gastei teus bens ó Pai e Te dou\nEste pranto em minhas mãos\n\nMil amigos conheci disseram adeus, caiu\nA solidão em mim\nUm patrão cruel levou-me a refletir: meu Pai\nNão trata um servo assim\n\nNem deixaste-me falar da ingratidão, morreu\nNo abraço o mal que eu fiz\nFesta roupa nova anel sandálias nos pés, voltei\nÀ vida sou feliz"
             },
             {
@@ -618,6 +723,7 @@
                 tipo: "Final",
                 titulo: "Anjos de Deus",
                 arquivo: "Final-AnjosdeDeus.pdf",
+                tom: "Mi Maior",
                 letra: "SE ACONTECER UM BARULHO PERTO DE VOCÊ\nÉ UM ANJO CHEGANDO PARA RECEBER\nSUAS ORAÇÕES E LEVÁ-LAS A DEUS\n\nENTÃO ABRA O CORAÇÃO E COMECE A LOUVAR\nSINTA O GOSTO DO CÉU QUE SE DERRAMA NO ALTAR\nQUE UM ANJO JÁ VEM COM A BENÇÃO NAS MÃOS\n\nTEM ANJOS VOANDO NESTE LUGAR\nNO MEIO DO POVO E EM CIMA DO ALTAR\nSUBINDO E DESCENDO EM TODAS AS DIREÇÕES\n\nNÃO SEI SE A IGREJA SUBIU OU SE O CÉU DESCEU\nSÓ SEI QUE ESTÁ CHEIO DE ANJOS DE DEUS\nPORQUE O PRÓPRIO DEUS ESTÁ AQUI\n\nQUANDO OS ANJOS PASSEIAM A IGREJA SE ALEGRA\nELA CANTA, ELA CHORA, ELA RI E CELEBRA\nABALA O INFERNO E DISSIPA O MAL\nSINTA O VENTO DAS ASAS DOS ANJOS AGORA\nCONFIA IRMÃO POIS É A TUA HORA\nA BENÇÃO CHEGOU E VOCÊ VAI LEVAR"
             }
         ];
@@ -636,6 +742,7 @@
                             <div class="cantico-numero">${cantico.id}</div>
                             <div class="cantico-tipo">${cantico.tipo}</div>
                             <div class="cantico-titulo">${cantico.titulo}</div>
+                            <div class="cantico-tom" style="color: #ffff00; font-weight: bold; margin-bottom: 5px;">🎵 Tom: ${cantico.tom}</div>
                             <div class="cantico-arquivo">${cantico.arquivo}</div>
                         </div>
                         <button class="expand-btn ${expandido ? 'rotated' : ''}" onclick="toggleExpansao(${cantico.id})">
@@ -693,10 +800,13 @@
         }
 
         function abrirPDF(arquivo) {
-            // CORREÇÃO: Abrindo PDFs em nova aba ao invés de iframe para evitar problemas de X-Frame-Options
-            // Usando encodeURIComponent para lidar com caracteres especiais nos nomes dos arquivos
+            // Abrindo PDF em popup em tela cheia
             const url = `https://raw.githubusercontent.com/iramalho1980/missa_4.1/main/${encodeURIComponent(arquivo)}`;
-            window.open(url, '_blank');
+            const popup = document.getElementById('popupOverlay');
+            const iframe = document.getElementById('popupPdf');
+            
+            iframe.src = url;
+            popup.style.display = 'flex';
         }
 
         function fecharPopup() {
