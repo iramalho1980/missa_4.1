@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Cânticos da Missa - Pasta Virtual</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 25%, #3a3a3a 50%, #c9aa00 75%, #f0d000 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(40px) saturate(180%);
+            border-radius: 30px;
+            border: 2px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                0 0 0 1px rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.1) 0%, 
+                rgba(255, 255, 255, 0.05) 25%, 
+                rgba(255, 255, 0, 0.1) 50%, 
+                rgba(255, 255, 255, 0.05) 75%, 
+                rgba(255, 255, 255, 0.1) 100%);
+            pointer-events: none;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #ffff00, #ffffff, #f0d000);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(255, 255, 0, 0.7);
+            filter: drop-shadow(0 0 10px rgba(255, 255, 0, 0.5));
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .canticos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .cantico-card {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(30px) saturate(200%) brightness(110%);
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 25px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.12),
+                0 2px 8px rgba(0, 0, 0, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                0 0 0 1px rgba(255, 255, 255, 0.02);
+        }
+
+        .cantico-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.1), 
+                rgba(255, 255, 0, 0.15), 
+                rgba(255, 255, 255, 0.1), 
+                transparent);
+            transition: left 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .cantico-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, 
+                rgba(255, 255, 255, 0.08) 0%, 
+                rgba(255, 255, 0, 0.05) 30%, 
+                transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
+
+        .cantico-card:hover::before {
+            left: 100%;
+        }
+
+        .cantico-card:hover::after {
+            opacity: 1;
+        }
+
+        .cantico-card:hover {
+            transform: translateY(-12px) scale(1.03);
+            box-shadow: 
+                0 25px 80px rgba(255, 255, 0, 0.25),
+                0 10px 40px rgba(0, 0, 0, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                0 0 0 1px rgba(255, 255, 0, 0.3);
+            border-color: rgba(255, 255, 0, 0.4);
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(40px) saturate(250%) brightness(120%);
+        }
+
+        .cantico-card.realizado {
+            background: rgba(0, 255, 0, 0.25);
+            border-color: rgba(0, 255, 0, 0.5);
+            box-shadow: 0 8px 32px rgba(0, 255, 0, 0.2);
+        }
+
+        .cantico-card.realizado::after {
+            content: '✓';
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.5rem;
+            color: #00ff00;
+            text-shadow: 0 0 15px #00ff00;
+            filter: drop-shadow(0 0 5px #00ff00);
+        }
+
+        .cantico-card.expandido {
+            grid-column: 1 / -1;
+            max-width: none;
+        }
+
+        .cantico-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .cantico-info {
+            flex: 1;
+        }
+
+        .cantico-numero {
+            display: inline-block;
+            background: linear-gradient(45deg, #ffff00, #f0d000);
+            color: #000;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 35px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            box-shadow: 0 0 20px rgba(255, 255, 0, 0.6);
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+        }
+
+        .cantico-tipo {
+            font-size: 0.9rem;
+            color: #ffff00;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
+        }
+
+        .cantico-titulo {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: white;
+            font-weight: bold;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .cantico-arquivo {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-style: italic;
+        }
+
+        .expand-btn {
+            background: linear-gradient(45deg, #ffff00, #f0d000);
+            color: #000;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.4s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(255, 255, 0, 0.3);
+        }
+
+        .expand-btn:hover {
+            transform: scale(1.15);
+            box-shadow: 0 0 25px rgba(255, 255, 0, 0.8);
+            filter: brightness(1.1);
+        }
+
+        .expand-btn.rotated {
+            transform: rotate(180deg);
+        }
+
+        .expand-btn.rotated:hover {
+            transform: rotate(180deg) scale(1.15);
+        }
+
+        .cantico-conteudo {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+
+        .cantico-conteudo.expandido {
+            max-height: 1000px;
+        }
+
+        .cantico-letra {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            white-space: pre-line;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.95);
+            border-left: 4px solid #ffff00;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .botoes {
+            display: flex;
+            gap: 12px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-pdf {
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-pdf:hover {
+            background: linear-gradient(45deg, #ff5252, #ff7979);
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+        }
+
+        .btn-realizado {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-realizado:hover {
+            background: linear-gradient(45deg, #26d0ce, #2eb398);
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 8px 25px rgba(78, 205, 196, 0.4);
+        }
+
+        .btn-realizado.ativo {
+            background: linear-gradient(45deg, #00ff00, #32ff32);
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.6);
+        }
+
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(15px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup-content {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(30px);
+            border-radius: 20px;
+            padding: 20px;
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: linear-gradient(45deg, #ff4757, #ff6b7a);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 71, 87, 0.3);
+            z-index: 1001;
+        }
+
+        .popup-close:hover {
+            background: linear-gradient(45deg, #ff3742, #ff5865);
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(255, 71, 87, 0.5);
+        }
+
+        .popup-pdf {
+            width: 100%;
+            height: calc(100% - 20px);
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin-top: 10px;
+        }
+
+        .progresso {
+            margin-top: 30px;
+            text-align: center;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(35px) saturate(180%) brightness(110%);
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 12px 40px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15),
+                0 0 0 1px rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progresso::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.05) 0%, 
+                rgba(255, 255, 0, 0.08) 50%, 
+                rgba(255, 255, 255, 0.05) 100%);
+            pointer-events: none;
+        }
+
+        .progresso h3 {
+            color: #ffff00;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+            text-shadow: 0 0 15px rgba(255, 255, 0, 0.5);
+        }
+
+        .barra-progresso {
+            background: rgba(255, 255, 255, 0.2);
+            height: 25px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .barra-progresso-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #ffff00, #00ff00, #32ff32);
+            width: 0%;
+            transition: width 0.6s ease;
+            border-radius: 15px;
+            box-shadow: 0 0 25px rgba(255, 255, 0, 0.6);
+            position: relative;
+        }
+
+        .barra-progresso-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .progresso-texto {
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .controles-globais {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .btn-global {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 24px;
+            margin: 8px;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-global:hover {
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+            background: linear-gradient(45deg, #5a6fd8, #6a4c93);
+        }
+
+        @media (max-width: 768px) {
+            .canticos-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .popup-pdf {
+                width: 95vw;
+                height: 70vh;
+            }
+
+            .cantico-card.expandido {
+                grid-column: 1;
+            }
+        }
+
+        /* Otimizações específicas para iPad e iOS */
+        @media screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+            .popup-content {
+                padding: 30px;
+                border-radius: 0;
+            }
+            
+            .popup-pdf {
+                height: calc(100vh - 80px);
+                border-radius: 10px;
+            }
+            
+            .popup-close {
+                width: 50px;
+                height: 50px;
+                font-size: 1.8rem;
+                top: 20px;
+                right: 30px;
+            }
+        }
+
+        /* Suporte para orientação landscape no iPad */
+        @media screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) {
+            .popup-content {
+                padding: 20px;
+            }
+            
+            .popup-pdf {
+                height: calc(100vh - 60px);
+            }
+        }
+
+        /* Suporte para iPhone e dispositivos móveis menores */
+        @media screen and (max-device-width: 767px) {
+            .popup-content {
+                padding: 15px;
+                border-radius: 0;
+            }
+            
+            .popup-pdf {
+                height: calc(100vh - 50px);
+                border-radius: 5px;
+            }
+            
+            .popup-close {
+                width: 40px;
+                height: 40px;
+                font-size: 1.3rem;
+                top: 10px;
+                right: 15px;
+            }
+            
+            .cantico-card {
+                padding: 20px;
+            }
+            
+            .cantico-titulo {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Suporte para toque e gestos */
+        .popup-overlay {
+            -webkit-overflow-scrolling: touch;
+            touch-action: manipulation;
+        }
+        
+        .popup-pdf {
+            -webkit-overflow-scrolling: touch;
+            overflow: auto;
+        }
+        
+        /* Prevenção de zoom indesejado no iOS */
+        input, select, textarea {
+            font-size: 16px;
+        }
+        
+        /* Melhor suporte para safe areas no iOS */
+        @supports (padding: max(0px)) {
+            .popup-content {
+                padding-top: max(20px, env(safe-area-inset-top));
+                padding-bottom: max(20px, env(safe-area-inset-bottom));
+                padding-left: max(20px, env(safe-area-inset-left));
+                padding-right: max(20px, env(safe-area-inset-right));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎵 Cânticos da Missa</h1>
+            <p>Pasta Virtual - Organize e acompanhe os cânticos durante a celebração</p>
+        </div>
+
+        <div class="controles-globais">
+            <button class="btn-global" onclick="expandirTodos()">📖 Expandir Todos</button>
+            <button class="btn-global" onclick="recolherTodos()">📕 Recolher Todos</button>
+            <button class="btn-global" onclick="resetarProgresso()">🔄 Resetar Progresso</button>
+        </div>
+
+        <div class="canticos-grid" id="canticosGrid">
+            <!-- Os cânticos serão inseridos aqui pelo JavaScript -->
+        </div>
+
+        <div class="progresso">
+            <h3>Progresso da Missa</h3>
+            <div class="barra-progresso">
+                <div class="barra-progresso-fill" id="barraProgresso"></div>
+            </div>
+            <div class="progresso-texto" id="progressoTexto">0 de 11 cânticos realizados (0%)</div>
+        </div>
+    </div>
+
+    <div class="popup-overlay" id="popupOverlay">
+        <div class="popup-content">
+            <button class="popup-close" id="popupClose">&times;</button>
+            <iframe class="popup-pdf" id="popupPdf" src=""></iframe>
+        </div>
+    </div>
+
+    <script>
+        // Dados dos cânticos com letras - ORDEM REORGANIZADA E NOMES CORRETOS DOS ARQUIVOS
+        const canticos = [
+            {
+                id: 1,
+                tipo: "Entrada",
+                titulo: "Eis-me Aqui, Senhor",
+                arquivo: "Entrada-Eis-meAqui,Senhor.pdf",
+                tom: "Sol Maior",
+                letra: "EIS-ME AQUI, SENHOR! EIS-ME AQUI, SENHOR!\nPRA FAZER TUA VONTADE, PRA VIVER NO TEU AMOR,\nPRA FAZER TUA VONTADE PRA VIVER NO TEU AMOR,\nEIS-ME AQUI, SENHOR!\n\nO SENHOR É O PASTOR QUE ME CONDUZ\nPOR CAMINHOS NUNCA VISTOS ME ENVIOU\nSOU CHAMADO A SER FERMENTO, SAL E LUZ\nE POR ISSO RESPONDI: \"AQUI ESTOU!\""
+            },
+            {
+                id: 2,
+                tipo: "Ato Penitencial",
+                titulo: "Pelos Pecados",
+                arquivo: "AtoPenitencial-PelosPecados.pdf",
+                tom: "Ré menor",
+                letra: "PELOS PECADOS, ERROS PASSADOS\nPOR DIVISÕES NA TUA IGREJA, Ó JESUS\nSENHOR PIEDADE, SENHOR PIEDADE\nSENHOR PIEDADE, PIEDADE DE NÓS (2X)\n\nQUEM NÃO TE ACEITA, QUEM TE REJEITA\nPODE NÃO CRER POR VER CRISTÃOS QUE VIVEM MAL\nCRISTO PIEDADE, CRISTO PIEDADE\nCRISTO PIEDADE, PIEDADE DE NÓS (2X)\n\nHOJE SE A VIDA É TÃO FERIDA\nDEVE-SE A CULPA, INDIFERENÇA DOS CRISTÃOS.\nSENHOR PIEDADE, SENHOR PIEDADE\nSENHOR PIEDADE, PIEDADE DE NÓS (2X)"
+            },
+            {
+                id: 3,
+                tipo: "Gloria",
+                titulo: "Gloria ao Pai Criador",
+                arquivo: "Gloria-gloria_ao_pai_criador.pdf",
+                tom: "Dó Maior",
+                letra: "Glória... Glória...\nAo Pai criador ao Filho redentor\nE ao Espírito Glória (bis)\n\nAo Pai criador do mundo\nAo Filho redentor dos homens\nAo Espírito de amor demos sempre\nGlória..."
+            },
+            {
+                id: 4,
+                tipo: "Salmo",
+                titulo: "Salmo 32 - Feliz o Povo",
+                arquivo: "Salmo-salmo32.pdf",
+                tom: "Fá Maior",
+                letra: "Feliz o povo que o Senhor\nescolheu por sua herança!\n\nÓ justos, alegrai-vos no Senhor!\naos retos fica bem glorificá-lo.\nFeliz o povo cujo Deus é o Senhor\ne a nação que escolheu por sua herança!\n\nMas o Senhor pousa o olhar sobre os que o temem,\ne que confiam esperando em seu amor,\npara da morte libertar as suas vidas\ne alimentá-los quando é tempo de penúria.\n\nNo Senhor nós esperamos confiantes,\nporque ele é nosso auxílio e proteção!\nSobre nós venha, Senhor, a vossa graça,\nda mesma forma que em vós nós esperamos!"
+            },
+            {
+                id: 5,
+                tipo: "Aclamação",
+                titulo: "A Minha Alma Abrirei",
+                arquivo: "Aclamação-a_minhalma_abrirei.pdf",
+                tom: "Lá Maior",
+                letra: "Aleluia Aleluia a minh'alma abrirei\nAleluia Aleluia Cristo é meu Rei\n\n(Repete em tons diferentes)"
+            },
+            {
+                id: 6,
+                tipo: "Ofertório",
+                titulo: "Meu Coração É Para Ti",
+                arquivo: "Ofertório-meu_coracao_eh_para_ti.pdf",
+                tom: "Mi menor",
+                letra: "Meu coração é para Ti Senhor\nMeu coração é para Ti Senhor\nMeu coração é para Ti Senhor\nMeu coração é para Ti\n\nPorque Tu me deste a Vida\nPorque Tu me deste o existir\nPorque Tu me deste o carinho\nMe deste o Amor\n\nPão e vinho são para Ti...\nA minha vida é para Ti..."
+            },
+            {
+                id: 7,
+                tipo: "Santo",
+                titulo: "Santo, Santo É",
+                arquivo: "Santo-santo_santo_e.pdf",
+                tom: "Si♭ Maior",
+                letra: "Santo Santo é Santo Santo é\nDeus do universo ó Senhor Javé\nO céu e a terra Vos proclamam Glorioso\nHosana Hosana nas alturas\n\nBendito o que vem em nome do Senhor\nHosana Hosana nas alturas\nHosana Hosana ao Rei.\nHosana Hosana nas alturas\nHosana Hosana ao Rei."
+            },
+            {
+                id: 8,
+                tipo: "Amém",
+                titulo: "Aaaamém",
+                arquivo: "Amem-Aaaamem.pdf",
+                tom: "Dó Maior",
+                letra: "Amém, Amém, Aaaamém\nAmém, Amém, Aaaamém"
+            },
+            {
+                id: 9,
+                tipo: "Cordeiro",
+                titulo: "Cordeiro de Deus que Tirais",
+                arquivo: "Cordeiro-CordeirodeDeusquetirais.pdf",
+                tom: "Sol menor",
+                letra: "CORDEIRO DE DEUS QUE TIRAIS O PECADO DO MUNDO\nTENDE PIEDADE, TENDE PIEDADE, TENDE PIEDADE,\nPIEDADE DE NÓS!\n\nCORDEIRO DE DEUS QUE TIRAIS O PECADO DO MUNDO\nTENDE PIEDADE, TENDE PIEDADE, TENDE PIEDADE,\nPIEDADE DE NÓS!\n\nCORDEIRO DE DEUS QUE TIRAIS O PECADO DO MUNDO\nDAÍ-NOS A PAZ, DAÍ-NOS A PAZ, DAÍ-NOS A PAZ SENHOR...\nA VOSSA PAZ"
+            },
+            {
+                id: 10,
+                tipo: "Comunhão",
+                titulo: "Este Pranto em Minhas Mãos",
+                arquivo: "Comunhão-este_pranto_em_minhas_maos.pdf",
+                tom: "Ré Maior",
+                letra: "Muito alegre eu te pedi o que era meu, partir\nUm sonho tão normal\nDissipei meus bens o coração também, no fim\nMeu mundo era irreal\n\nConfiei no teu amor e voltei\nSim aqui é meu lugar\nEu gastei teus bens ó Pai e Te dou\nEste pranto em minhas mãos\n\nMil amigos conheci disseram adeus, caiu\nA solidão em mim\nUm patrão cruel levou-me a refletir: meu Pai\nNão trata um servo assim\n\nNem deixaste-me falar da ingratidão, morreu\nNo abraço o mal que eu fiz\nFesta roupa nova anel sandálias nos pés, voltei\nÀ vida sou feliz"
+            },
+            {
+                id: 11,
+                tipo: "Final",
+                titulo: "Anjos de Deus",
+                arquivo: "Final-AnjosdeDeus.pdf",
+                tom: "Mi Maior",
+                letra: "SE ACONTECER UM BARULHO PERTO DE VOCÊ\nÉ UM ANJO CHEGANDO PARA RECEBER\nSUAS ORAÇÕES E LEVÁ-LAS A DEUS\n\nENTÃO ABRA O CORAÇÃO E COMECE A LOUVAR\nSINTA O GOSTO DO CÉU QUE SE DERRAMA NO ALTAR\nQUE UM ANJO JÁ VEM COM A BENÇÃO NAS MÃOS\n\nTEM ANJOS VOANDO NESTE LUGAR\nNO MEIO DO POVO E EM CIMA DO ALTAR\nSUBINDO E DESCENDO EM TODAS AS DIREÇÕES\n\nNÃO SEI SE A IGREJA SUBIU OU SE O CÉU DESCEU\nSÓ SEI QUE ESTÁ CHEIO DE ANJOS DE DEUS\nPORQUE O PRÓPRIO DEUS ESTÁ AQUI\n\nQUANDO OS ANJOS PASSEIAM A IGREJA SE ALEGRA\nELA CANTA, ELA CHORA, ELA RI E CELEBRA\nABALA O INFERNO E DISSIPA O MAL\nSINTA O VENTO DAS ASAS DOS ANJOS AGORA\nCONFIA IRMÃO POIS É A TUA HORA\nA BENÇÃO CHEGOU E VOCÊ VAI LEVAR"
+            }
+        ];
+
+        let canticosRealizados = new Set();
+        let canticosExpandidos = new Set();
+
+        function criarCardCantico(cantico) {
+            const realizado = canticosRealizados.has(cantico.id);
+            const expandido = canticosExpandidos.has(cantico.id);
+            
+            return `
+                <div class="cantico-card ${realizado ? 'realizado' : ''} ${expandido ? 'expandido' : ''}" data-id="${cantico.id}">
+                    <div class="cantico-header">
+                        <div class="cantico-info">
+                            <div class="cantico-numero">${cantico.id}</div>
+                            <div class="cantico-tipo">${cantico.tipo}</div>
+                            <div class="cantico-titulo">${cantico.titulo}</div>
+                            <div class="cantico-tom" style="color: #ffff00; font-weight: bold; margin-bottom: 5px;">🎵 Tom: ${cantico.tom}</div>
+                            <div class="cantico-arquivo">${cantico.arquivo}</div>
+                        </div>
+                        <button class="expand-btn ${expandido ? 'rotated' : ''}" onclick="toggleExpansao(${cantico.id})">
+                            ▼
+                        </button>
+                    </div>
+                    
+                    <div class="cantico-conteudo ${expandido ? 'expandido' : ''}" id="conteudo-${cantico.id}">
+                        <div class="cantico-letra">${cantico.letra}</div>
+                        <div class="botoes">
+                            <button class="btn btn-pdf" onclick="abrirPDF('${cantico.arquivo}')">📄 Ver PDF</button>
+                            <button class="btn btn-realizado ${realizado ? 'ativo' : ''}" onclick="toggleRealizado(${cantico.id})">
+                                ${realizado ? '✓ Realizado' : 'Marcar como Realizado'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderizarCanticos() {
+            const grid = document.getElementById('canticosGrid');
+            grid.innerHTML = canticos.map(criarCardCantico).join('');
+            atualizarProgresso();
+        }
+
+        function toggleExpansao(id) {
+            if (canticosExpandidos.has(id)) {
+                canticosExpandidos.delete(id);
+            } else {
+                canticosExpandidos.add(id);
+            }
+            renderizarCanticos();
+            salvarEstado();
+        }
+
+        function expandirTodos() {
+            canticos.forEach(cantico => canticosExpandidos.add(cantico.id));
+            renderizarCanticos();
+            salvarEstado();
+        }
+
+        function recolherTodos() {
+            canticosExpandidos.clear();
+            renderizarCanticos();
+            salvarEstado();
+        }
+
+        function resetarProgresso() {
+            if (confirm('Tem certeza que deseja resetar todo o progresso?')) {
+                canticosRealizados.clear();
+                renderizarCanticos();
+                salvarEstado();
+            }
+        }
+
+        function abrirPDF(arquivo) {
+            // Usando PDF.js para visualização de PDF compatível com políticas de segurança
+            const url = `https://raw.githubusercontent.com/iramalho1980/missa_4.1/main/${encodeURIComponent(arquivo)}`;
+            const pdfViewerUrl = `https://docs.google.com/gview?url=${encodeURIComponent(url)}&embedded=true`;
+            
+            const popup = document.getElementById('popupOverlay');
+            const iframe = document.getElementById('popupPdf');
+            
+            iframe.src = pdfViewerUrl;
+            popup.style.display = 'flex';
+        }
+
+        function fecharPopup() {
+            const popup = document.getElementById('popupOverlay');
+            popup.style.display = 'none';
+            document.getElementById('popupPdf').src = '';
+        }
+
+        function toggleRealizado(id) {
+            if (canticosRealizados.has(id)) {
+                canticosRealizados.delete(id);
+            } else {
+                canticosRealizados.add(id);
+            }
+            renderizarCanticos();
+            salvarEstado();
+        }
+
+        function atualizarProgresso() {
+            const total = canticos.length;
+            const realizados = canticosRealizados.size;
+            const porcentagem = Math.round((realizados / total) * 100);
+            
+            document.getElementById('barraProgresso').style.width = `${porcentagem}%`;
+            document.getElementById('progressoTexto').textContent = 
+                `${realizados} de ${total} cânticos realizados (${porcentagem}%)`;
+        }
+
+        function salvarEstado() {
+            localStorage.setItem('canticosRealizados', JSON.stringify([...canticosRealizados]));
+            localStorage.setItem('canticosExpandidos', JSON.stringify([...canticosExpandidos]));
+        }
+
+        function carregarEstado() {
+            const realizadosSalvos = localStorage.getItem('canticosRealizados');
+            const expandidosSalvos = localStorage.getItem('canticosExpandidos');
+            
+            if (realizadosSalvos) {
+                canticosRealizados = new Set(JSON.parse(realizadosSalvos));
+            }
+            
+            if (expandidosSalvos) {
+                canticosExpandidos = new Set(JSON.parse(expandidosSalvos));
+            }
+        }
+
+        // Event listeners
+        document.getElementById('popupClose').addEventListener('click', fecharPopup);
+        document.getElementById('popupOverlay').addEventListener('click', function(e) {
+            if (e.target === this) {
+                fecharPopup();
+            }
+        });
+
+        // Inicializar a página
+        carregarEstado();
+        renderizarCanticos();
+    </script>
+</body>
+</html>
+
